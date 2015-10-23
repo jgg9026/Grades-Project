@@ -117,6 +117,7 @@ public class Consultor extends Conexion {
     }
     public void selectToGradosCount(JTable tblGrad, DefaultTableModel modelo, String grado, String anio ) throws SQLException{
         String[] t = new String [2];
+        System.out.print("kakakakakkaka121212");
        // String sql = "Select * cursos where  
         String sql = "select count(idEstudiantes), Curso from estudiantes inner join cursos on estudiantes.idCursos = cursos.idCursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where grados.Grado = "+grado+" and aniolectivos.idAnio = "+anio+" group by Curso;";
         try{
@@ -124,14 +125,29 @@ public class Consultor extends Conexion {
             Statement sent;
             sent = conexion.createStatement();
             ResultSet rest = sent.executeQuery(sql);
-            while(rest.next()){
-                t[0] = rest.getString("count(idEstudiantes)");
-                t[1] = rest.getString("Curso");
-                modelo.addRow(t);
-                tblGrad.setModel(modelo);
-                
+            if (!rest.isBeforeFirst() ) {    
+                System.out.println("vacio");
+                String sql2 = "select Curso from cursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where aniolectivos.idAnio = "+anio+" and grados.Grado ="+grado;
+                ResultSet rest2 = sent.executeQuery(sql2);
+                System.out.print(rest2);
+                while(rest2.next()){
+                    t[0] = "0";
+                    t[1] = rest2.getString("Curso");
+                    modelo.addRow(t);
+                    tblGrad.setModel(modelo);
+                }
             }
-            } catch (SQLException ex) {
+            else
+            {
+               System.out.print(rest);
+                while(rest.next()){
+                    t[0] = rest.getString("count(idEstudiantes)");
+                    t[1] = rest.getString("Curso");
+                    modelo.addRow(t);
+                    tblGrad.setModel(modelo);
+                }
+            }
+        } catch (SQLException ex) {
             ex.printStackTrace();
             conexion.rollback();
         } finally {
@@ -285,5 +301,9 @@ public class Consultor extends Conexion {
         } finally {
             desconectar();
         }
+    }
+
+    private void puts(String[] t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
