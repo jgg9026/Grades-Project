@@ -157,14 +157,15 @@ public class Insertion extends Conexion{
         }        
     }
     
-    public boolean insertToProfesores(String LV_Name, String LV_Last, String LV_Phone) throws SQLException{
+    public boolean insertToProfesores(String LV_Name, String LV_Last, String LV_Phone, String LV_ID) throws SQLException{
         try{
             conectar();
-            String sql = "INSERT INTO Profesores(Nombres,Apellidos,Telefono) VALUES(?,?,?)";
+            String sql = "INSERT INTO Profesores(Nombres,Apellidos,Telefono,Documento) VALUES(?,?,?,?)";
             PreparedStatement sent = conexion.prepareStatement(sql);
             sent.setString(1, LV_Name);
             sent.setString(2, LV_Last);
             sent.setString(3, LV_Phone);
+            sent.setString(4, LV_ID);
             int rest = sent.executeUpdate();
             if(rest > 0){
                 conexion.commit();

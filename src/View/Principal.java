@@ -146,6 +146,11 @@ public class Principal extends javax.swing.JFrame {
         btnMat2.setPreferredSize(new java.awt.Dimension(81, 85));
         btnMat2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         btnMat2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnMat2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMat2ActionPerformed(evt);
+            }
+        });
 
         btnMateria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/FindUser_2 (64x64).png"))); // NOI18N
         btnMateria.setText("Consultar");
@@ -474,6 +479,10 @@ public class Principal extends javax.swing.JFrame {
     private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUserActionPerformed
+
+    private void btnMat2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMat2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMat2ActionPerformed
 
     /**
      * @param args the command line arguments

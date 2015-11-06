@@ -124,29 +124,58 @@ public class Consultor extends Conexion {
             conectar();
             Statement sent;
             sent = conexion.createStatement();
-            ResultSet rest = sent.executeQuery(sql);
-            if (!rest.isBeforeFirst() ) {    
-                System.out.println("vacio");
-                String sql2 = "select Curso from cursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where aniolectivos.idAnio = "+anio+" and grados.Grado ="+grado;
-                ResultSet rest2 = sent.executeQuery(sql2);
-                System.out.print(rest2);
-                while(rest2.next()){
-                    t[0] = "0";
-                    t[1] = rest2.getString("Curso");
-                    modelo.addRow(t);
-                    tblGrad.setModel(modelo);
-                }
+            String sql3 = "select Curso from cursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where aniolectivos.idAnio = "+anio+" and grados.Grado ="+grado;
+            ResultSet rest3 = sent.executeQuery(sql3);
+            System.out.print(rest3);
+            int count=0;
+            while(rest3.next()){
+                t[0] = "0";
+                t[1] = rest3.getString("Curso");
+                
+                modelo.addRow(t);
+                
+                tblGrad.setModel(modelo);
             }
-            else
-            {
-               System.out.print(rest);
-                while(rest.next()){
+            
+            ResultSet rest = sent.executeQuery(sql);
+            while(rest.next()){
+                    
                     t[0] = rest.getString("count(idEstudiantes)");
                     t[1] = rest.getString("Curso");
-                    modelo.addRow(t);
+                    //modelo.addRow(t);
+                    modelo.removeRow(count);
+                    modelo.insertRow(count, t);
                     tblGrad.setModel(modelo);
+                    count = count +1;
                 }
-            }
+            count=0;
+//            if (!rest.isBeforeFirst() ) {    
+//                System.out.println("vacio");
+//                String sql2 = "select Curso from cursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where aniolectivos.idAnio = "+anio+" and grados.Grado ="+grado;
+//                ResultSet rest2 = sent.executeQuery(sql2);
+//                System.out.print(rest2);
+//                while(rest2.next()){
+//                    t[0] = "0";
+//                    t[1] = rest2.getString("Curso");
+//                    modelo.addRow(t);
+//                    tblGrad.setModel(modelo);
+//                }
+//            }
+//            else
+//            {
+//               System.out.print(rest);
+//                while(rest.next()){
+//                    
+//                    t[0] = rest.getString("count(idEstudiantes)");
+//                    t[1] = rest.getString("Curso");
+//                    //modelo.addRow(t);
+//                    modelo.removeRow(count);
+//                    modelo.insertRow(count, t);
+//                    tblGrad.setModel(modelo);
+//                    count = count +1;
+//                }
+//                count =0;
+//            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             conexion.rollback();
@@ -207,6 +236,90 @@ public class Consultor extends Conexion {
         return s[0];
     
     }
+    
+    //------------------------------
+    
+    public void selectAcudiente(String idEstudiantes, JLabel nombre, JLabel apellido, JLabel telefono, JLabel direccion, JLabel documento) throws SQLException{
+        String [] t = new String [6];
+        String sql = "select * from acudientes where idEstudiantes = "+idEstudiantes+";";
+        try{
+            conectar();
+            Statement sent;
+            sent = conexion.createStatement();
+            ResultSet rest = sent.executeQuery(sql);
+            System.out.print(rest);
+            while(rest.next()){
+                //String[] head = {"IdEst","Nombres","Apellidos","Documento","EPS","RH","Telefono","Dirección"};
+                
+                nombre.setText(rest.getString("Nombres"));
+                apellido.setText(rest.getString("Apellidos"));
+                telefono.setText(rest.getString("Telefono"));
+                direccion.setText(rest.getString("Direccion"));
+                documento.setText(rest.getString("Documento"));
+                
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            conexion.rollback();
+        } finally {
+            desconectar();
+        } 
+    }
+    
+    //---------------------------
+    public void selectEstudiante(JTable tblEst, DefaultTableModel modelo, String anio, String curso, String grado, String nombre, String apellido)throws SQLException{
+        String[] t = new String [8];
+        String sql = "select * from estudiantes where idCursos = ( select idCursos from cursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where aniolectivos.idAnio = "+anio+" and grados.Grado = "+grado+" and cursos.Curso = '"+curso+"') and estudiantes.Nombres like '"+nombre+"' or estudiantes.Apellidos like '"+apellido+"';";
+        try{
+            conectar();
+            Statement sent;
+            sent = conexion.createStatement();
+            ResultSet rest = sent.executeQuery(sql);
+            while(rest.next()){
+                //String[] head = {"IdEst","Nombres","Apellidos","Documento","EPS","RH","Telefono","Dirección"}; 
+                t[0] = rest.getString("IdEstudiantes");
+                t[1] = rest.getString("Nombres");
+                t[2] = rest.getString("Apellidos");
+                t[3] = rest.getString("Documento");
+                t[4] = rest.getString("EPS");
+                t[5] = rest.getString("RH");
+                t[6] = rest.getString("Telefono");
+                t[7] = rest.getString("Direccion");
+                modelo.addRow(t);
+                tblEst.setModel(modelo);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            conexion.rollback();
+        } finally {
+            desconectar();
+        } 
+        
+    }
+    
+    
+    
+    
+    //---------------------------
+    public void selectToCursosbygrad(JComboBox Curso, String grado, String anio)throws SQLException{
+        String sql = "select Curso from cursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where aniolectivos.idAnio = "+anio+" and grados.Grado ="+grado;
+        try{
+            conectar();
+            Statement sent;
+            sent = conexion.createStatement();
+            ResultSet rest = sent.executeQuery(sql);
+            while(rest.next()){
+                Curso.addItem(rest.getString("Curso"));
+                
+            }
+            } catch (SQLException ex) {
+            ex.printStackTrace();
+            conexion.rollback();
+        } finally {
+            desconectar();
+        }  
+    }
+    //---------------------------
     public void selectToGradosAll(JComboBox Grad, String anio) throws SQLException{
         String sql = "SELECT Grado FROM grados where idAnio = '"+anio+"' ";
                   // + "ORDER BY Grado ASC;";
@@ -232,7 +345,7 @@ public class Consultor extends Conexion {
             desconectar();
         }        
     }
-    
+    //--------------
     public void selectToMaterias(JTable tblGrad, DefaultTableModel modelo, String LV_Anio, String LV_Grado) throws SQLException{
         String[] s = new String[1];
         String sql = "SELECT Materia FROM materias "
