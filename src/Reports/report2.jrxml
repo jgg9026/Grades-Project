@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a0d2d8c6-08e4-48e5-94f0-d7df0b043ad6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     usuarios.`idUsuarios` AS usuarios_idUsuarios,
+     usuarios.`Contraseña` AS usuarios_Contraseña,
+     usuarios.`Nombres` AS usuarios_Nombres,
+     usuarios.`Apellidos` AS usuarios_Apellidos,
+     usuarios.`idPerfiles` AS usuarios_idPerfiles,
+     usuarios.`Estado` AS usuarios_Estado,
+     perfiles.`idPerfiles` AS perfiles_idPerfiles,
+     perfiles.`Descripcion` AS perfiles_Descripcion
+FROM
+     `perfiles` perfiles INNER JOIN `usuarios` usuarios ON perfiles.`idPerfiles` = usuarios.`idPerfiles`]]>
+	</queryString>
+	<field name="usuarios_idUsuarios" class="java.lang.String"/>
+	<field name="usuarios_Contraseña" class="java.lang.String"/>
+	<field name="usuarios_Nombres" class="java.lang.String"/>
+	<field name="usuarios_Apellidos" class="java.lang.String"/>
+	<field name="usuarios_idPerfiles" class="java.lang.Integer"/>
+	<field name="usuarios_Estado" class="java.lang.Integer"/>
+	<field name="perfiles_idPerfiles" class="java.lang.Integer"/>
+	<field name="perfiles_Descripcion" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="572" height="79" backcolor="#0099FF" uuid="a02b0a9e-02c5-4fd5-8926-6c77d69fdeb4"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="79" uuid="8252e545-5599-4526-b683-d13203918100"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="48"/>
+				</textElement>
+				<text><![CDATA[Reporte de Usuarios]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="143" height="38" uuid="8bcf63d2-0c51-46eb-87b5-51edf4cb4271"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[Usuario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="0" width="143" height="38" uuid="34ea8a65-6468-4b79-ace3-527e05600950"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[Perfil]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="0" width="143" height="38" uuid="4f596573-9bec-4719-82c6-6d9ce7cc3d81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="0" width="143" height="38" uuid="14a224c0-a66b-4718-aa3f-691b642da46a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="14"/>
+				</textElement>
+				<text><![CDATA[Apellidos]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="37" width="572" height="1" uuid="eed834fb-e168-4d34-8f9f-a095f60f8f27"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="143" height="20" uuid="5f055435-8413-405d-91d4-b683c3bd86a3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{usuarios_idUsuarios}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="0" width="143" height="20" uuid="6447c276-8077-4bf0-ba07-620e4ee538a1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{usuarios_Nombres}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="0" width="143" height="20" uuid="56dbc3fd-efcc-4adb-a06e-f2b8528885ad"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{usuarios_Apellidos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="429" y="0" width="143" height="20" uuid="96352464-0d34-46a4-9c33-c6e36f837dd7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{perfiles_Descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="472" y="0" width="100" height="20" uuid="8aa5469a-9369-4951-89b8-3b4b67033925"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
