@@ -6,8 +6,10 @@
 package View.models;
 
 import DBHandling.Consultor;
+import DBHandling.Deleter;
 import DBHandling.Insertion;
 import Models.Encrypt;
+import Models.ReportGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -22,7 +24,9 @@ public class Users extends javax.swing.JDialog {
     
     Consultor search = new Consultor();
     Insertion add = new Insertion();
+    Deleter del = new Deleter();
     Encrypt clue = new Encrypt();
+    ReportGenerator generator = new ReportGenerator();
 
     public Users(javax.swing.JFrame parent) {
         super(parent, true);
@@ -32,6 +36,7 @@ public class Users extends javax.swing.JDialog {
         NewUser.setVisible(true);
         ConsUser.setVisible(false);
         DelUser.setVisible(false);
+        btnDelete.setEnabled(false);
     }
 
     /**
@@ -47,17 +52,18 @@ public class Users extends javax.swing.JDialog {
         Set = new javax.swing.JPanel();
         DelUser = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtIdUser = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
+        txtNombreDel = new javax.swing.JLabel();
+        txtLastDel = new javax.swing.JLabel();
+        txtPerfilDel = new javax.swing.JLabel();
+        btnDelete = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         ConsUser = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtUserCons = new javax.swing.JTextField();
         jButton6 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -65,6 +71,7 @@ public class Users extends javax.swing.JDialog {
         txtApellidos = new javax.swing.JLabel();
         txtPerfil = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
         NewUser = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -93,20 +100,32 @@ public class Users extends javax.swing.JDialog {
 
         jLabel15.setText("Perfil");
 
-        jLabel16.setText("Nombre");
+        btnDelete.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Error (32x32).png"))); // NOI18N
+        btnDelete.setText("Borrar");
+        btnDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDelete.setIconTextGap(2);
+        btnDelete.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnDelete.setPreferredSize(new java.awt.Dimension(61, 61));
+        btnDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
-        jLabel17.setText("Apellidos");
-
-        jLabel18.setText("Perfil");
-
-        jButton7.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Error (32x32).png"))); // NOI18N
-        jButton7.setText("Borrar");
-        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton7.setIconTextGap(2);
-        jButton7.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jButton7.setPreferredSize(new java.awt.Dimension(61, 61));
-        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Find (32x32).png"))); // NOI18N
+        jButton8.setText("Buscar");
+        jButton8.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton8.setVerifyInputWhenFocusTarget(false);
+        jButton8.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout DelUserLayout = new javax.swing.GroupLayout(DelUser);
         DelUser.setLayout(DelUserLayout);
@@ -117,13 +136,15 @@ public class Users extends javax.swing.JDialog {
                 .addGroup(DelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DelUserLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(DelUserLayout.createSequentialGroup()
                         .addGroup(DelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(DelUserLayout.createSequentialGroup()
                                 .addComponent(jLabel13)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel16))
+                                .addComponent(txtNombreDel))
                             .addGroup(DelUserLayout.createSequentialGroup()
                                 .addGroup(DelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DelUserLayout.createSequentialGroup()
@@ -133,12 +154,12 @@ public class Users extends javax.swing.JDialog {
                                         .addComponent(jLabel15)
                                         .addGap(28, 28, 28)))
                                 .addGroup(DelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel18)
-                                    .addComponent(jLabel17)))
+                                    .addComponent(txtPerfilDel)
+                                    .addComponent(txtLastDel)))
                             .addGroup(DelUserLayout.createSequentialGroup()
                                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtIdUser, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 12, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -148,21 +169,23 @@ public class Users extends javax.swing.JDialog {
                 .addGap(30, 30, 30)
                 .addGroup(DelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIdUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(DelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jLabel16))
+                    .addComponent(txtNombreDel))
                 .addGap(18, 18, 18)
                 .addGroup(DelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jLabel17))
+                    .addComponent(txtLastDel))
                 .addGap(18, 18, 18)
                 .addGroup(DelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(jLabel18))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPerfilDel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
+                .addGroup(DelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -198,6 +221,13 @@ public class Users extends javax.swing.JDialog {
 
         jLabel6.setText("Nombre");
 
+        jButton7.setText("jButton7");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ConsUserLayout = new javax.swing.GroupLayout(ConsUser);
         ConsUser.setLayout(ConsUserLayout);
         ConsUserLayout.setHorizontalGroup(
@@ -206,6 +236,8 @@ public class Users extends javax.swing.JDialog {
                 .addGroup(ConsUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ConsUserLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(ConsUserLayout.createSequentialGroup()
                         .addGroup(ConsUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,7 +253,7 @@ public class Users extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(ConsUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNombre)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUserCons, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtApellidos)
                             .addComponent(txtPerfil))
                         .addGap(0, 40, Short.MAX_VALUE)))
@@ -233,7 +265,7 @@ public class Users extends javax.swing.JDialog {
                 .addGap(33, 33, 33)
                 .addGroup(ConsUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUserCons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(ConsUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -243,11 +275,16 @@ public class Users extends javax.swing.JDialog {
                     .addComponent(jLabel7)
                     .addComponent(txtApellidos))
                 .addGap(18, 18, 18)
-                .addGroup(ConsUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtPerfil))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(ConsUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ConsUserLayout.createSequentialGroup()
+                        .addGroup(ConsUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(txtPerfil))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ConsUserLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton7)))
                 .addContainerGap())
         );
 
@@ -478,7 +515,12 @@ public class Users extends javax.swing.JDialog {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
-            search.selectToUsuarios(txtNombre,txtApellidos,txtPerfil);
+            String[] data =  search.selectToUsersDescription(txtUserCons.getText()); 
+            if(data != null){
+                txtNombre.setText(data[0]);
+                txtApellidos.setText(data[1]);
+                txtPerfil.setText(data[2]);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -506,6 +548,52 @@ public class Users extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        try {
+            if(search.selectToUsers(txtNombreDel, txtLastDel, txtPerfilDel, txtIdUser.getText()) == true){
+               btnDelete.setEnabled(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "La busqueda no arrojo ningun resultado");
+                txtNombreDel.setText("");
+                txtLastDel.setText("");
+                txtPerfilDel.setText("");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        try {
+            if(Integer.parseInt(search.selectToUsers(txtIdUser.getText())) == 1){
+                JOptionPane.showMessageDialog(null, "El Usuario se encuentra ACTIVO");
+            } else{
+                if(JOptionPane.showConfirmDialog(this, "Desea borrar el Usuario", "Borrar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION){
+                    try {
+                        if(del.deleteToUser(txtIdUser.getText()) == true){
+                            JOptionPane.showMessageDialog(null, "Usuario eliminado satisfactoriamente");
+                            txtNombreDel.setText("");
+                            txtLastDel.setText("");
+                            txtPerfilDel.setText("");
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Algo salio mal");
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                btnDelete.setEnabled(false);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        generator.UserReport();
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -548,6 +636,7 @@ public class Users extends javax.swing.JDialog {
     private javax.swing.JPanel NewUser;
     private javax.swing.JPanel Options;
     private javax.swing.JPanel Set;
+    private javax.swing.JButton btnDelete;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -556,14 +645,12 @@ public class Users extends javax.swing.JDialog {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -571,16 +658,19 @@ public class Users extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JRadioButton rbtDir;
     private javax.swing.JRadioButton rbtProf;
     private javax.swing.JLabel txtApellidos;
+    private javax.swing.JTextField txtIdUser;
     private javax.swing.JTextField txtLast;
+    private javax.swing.JLabel txtLastDel;
     private javax.swing.JTextField txtNom;
     private javax.swing.JLabel txtNombre;
+    private javax.swing.JLabel txtNombreDel;
     private javax.swing.JTextField txtPass;
     private javax.swing.JLabel txtPerfil;
+    private javax.swing.JLabel txtPerfilDel;
     private javax.swing.JTextField txtUser;
+    private javax.swing.JTextField txtUserCons;
     // End of variables declaration//GEN-END:variables
 }

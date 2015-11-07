@@ -20,13 +20,24 @@ import javax.swing.JOptionPane;
 public class Conexion {
     
     protected static Connection conexion;
-    protected static String[] GV_data;
+    protected static String[] GV_data = null;
+    
+   protected Connection JConectar() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conexion = DriverManager.getConnection(GV_data[0], GV_data[1], GV_data[2]);
+            conexion.setAutoCommit(false);
+            return conexion;
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
          
     protected boolean conectar() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            //conexion = DriverManager.getConnection(GV_data[0], GV_data[1], GV_data[2]);
-            conexion = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydb","root","");
+            conexion = DriverManager.getConnection(GV_data[0], GV_data[1], GV_data[2]);
             conexion.setAutoCommit(false);
             return true;
         } catch (ClassNotFoundException | SQLException e) {
