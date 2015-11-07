@@ -8,16 +8,10 @@ package View.models;
 import DBHandling.Consultor;
 import DBHandling.Insertion;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  *
@@ -220,12 +214,6 @@ public class Institucion extends javax.swing.JDialog {
         jLabel1.setText("Año Lectivo");
 
         jLabel2.setText("2015");
-
-        cmbMatGrad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbMatGradActionPerformed(evt);
-            }
-        });
 
         jLabel3.setText("Grado");
 
@@ -720,12 +708,12 @@ public class Institucion extends javax.swing.JDialog {
             SetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SetLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(NewMat, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+                .addComponent(NewMat, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(SetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SetLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(FindMat, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+                    .addComponent(FindMat, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                     .addContainerGap()))
             .addGroup(SetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SetLayout.createSequentialGroup()
@@ -852,7 +840,7 @@ public class Institucion extends javax.swing.JDialog {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-       
+        
     }//GEN-LAST:event_btnNewMatActionPerformed
 
     private void btnFindMatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindMatActionPerformed
@@ -1005,10 +993,6 @@ public class Institucion extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Por favor haga una seleccion en la tabla");
         } 
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void cmbMatGradActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMatGradActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbMatGradActionPerformed
 
     /**
      * @param args the command line arguments

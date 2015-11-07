@@ -13,39 +13,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class Consultor extends Conexion {
     
-    //----------------------------------------------------------------------------------
-    public boolean consultaCursoTotable(String a,JTable tlbEst, DefaultTableModel modelo){
-        conectar();
-        String sql = "select Materia, Grado from materias where Grado = '"+a+"';";
-        String[] s = new String[2];
-        try {
-            Statement sent = conexion.createStatement();
-            ResultSet rest = sent.executeQuery(sql);
-            while(rest.next()){
-                s[0] = rest.getString("Materia");
-                s[1] = rest.getString("Grado");
-                modelo.addRow(s);
-                tlbEst.setModel(modelo);
-            }
-            return true;
-        } catch (SQLException ex) {
-            return false;
-        } finally {
-            desconectar();
-        }
-    }
-    //---------------------------------------------------
     public String[] selectToUsers(String User, String Pass) throws SQLException{
         String[] s = new String[3];
         String sql = "SELECT u.nombres, u.apellidos, p.Descripcion "
                 + "FROM usuarios u INNER JOIN perfiles p ON u.idPerfiles = p.idPerfiles "
-                + "WHERE u.idUsuarios like '"+User+"';";
+                + "WHERE u.idUsuarios like '"+User+"' AND u.Contraseña like '"+Pass+"';";
         try {
             conectar();
             Statement sent;
@@ -65,7 +42,7 @@ public class Consultor extends Conexion {
             desconectar();
         }
     }
-   
+    
     public void selectToGrados(JTable tblGrad, DefaultTableModel modelo) throws SQLException{
         String[] s = new String[3];
         String sql = "select g.idGrados, c.Curso , count(e.idEstudiantes) " +
@@ -90,243 +67,10 @@ public class Consultor extends Conexion {
             desconectar();
         }        
     }
-    public String selectToEstudiantesid(String document) throws SQLException{
-        
-        String sql = "select idEstudiantes from estudiantes where Documento = '"+document+"'";
-        String t = null;
-        try{
-            conectar();
-            Statement sent;
-            sent = conexion.createStatement();
-            ResultSet rest = sent.executeQuery(sql);
-            while(rest.next()){
-                t= rest.getString("idEstudiantes"); 
-            }
-            
-            
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            conexion.rollback();
-        } 
-       
-        finally {
-            desconectar();
-        } 
-        
-        return t;
-    }
-    public void selectToGradosCount(JTable tblGrad, DefaultTableModel modelo, String grado, String anio ) throws SQLException{
-        String[] t = new String [2];
-        System.out.print("kakakakakkaka121212");
-       // String sql = "Select * cursos where  
-        String sql = "select count(idEstudiantes), Curso from estudiantes inner join cursos on estudiantes.idCursos = cursos.idCursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where grados.Grado = "+grado+" and aniolectivos.idAnio = "+anio+" group by Curso;";
-        try{
-            conectar();
-            Statement sent;
-            sent = conexion.createStatement();
-            String sql3 = "select Curso from cursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where aniolectivos.idAnio = "+anio+" and grados.Grado ="+grado;
-            ResultSet rest3 = sent.executeQuery(sql3);
-            System.out.print(rest3);
-            int count=0;
-            while(rest3.next()){
-                t[0] = "0";
-                t[1] = rest3.getString("Curso");
-                
-                modelo.addRow(t);
-                
-                tblGrad.setModel(modelo);
-            }
-            
-            ResultSet rest = sent.executeQuery(sql);
-            while(rest.next()){
-                    
-                    t[0] = rest.getString("count(idEstudiantes)");
-                    t[1] = rest.getString("Curso");
-                    //modelo.addRow(t);
-                    modelo.removeRow(count);
-                    modelo.insertRow(count, t);
-                    tblGrad.setModel(modelo);
-                    count = count +1;
-                }
-            count=0;
-//            if (!rest.isBeforeFirst() ) {    
-//                System.out.println("vacio");
-//                String sql2 = "select Curso from cursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where aniolectivos.idAnio = "+anio+" and grados.Grado ="+grado;
-//                ResultSet rest2 = sent.executeQuery(sql2);
-//                System.out.print(rest2);
-//                while(rest2.next()){
-//                    t[0] = "0";
-//                    t[1] = rest2.getString("Curso");
-//                    modelo.addRow(t);
-//                    tblGrad.setModel(modelo);
-//                }
-//            }
-//            else
-//            {
-//               System.out.print(rest);
-//                while(rest.next()){
-//                    
-//                    t[0] = rest.getString("count(idEstudiantes)");
-//                    t[1] = rest.getString("Curso");
-//                    //modelo.addRow(t);
-//                    modelo.removeRow(count);
-//                    modelo.insertRow(count, t);
-//                    tblGrad.setModel(modelo);
-//                    count = count +1;
-//                }
-//                count =0;
-//            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            conexion.rollback();
-        } finally {
-            desconectar();
-        }  
-        
-    }
     
-    
-    
-    public void selecToAniobox(JComboBox anio)  throws SQLException{
-        String sql = "SELECT idAnio FROM aniolectivos";
-        try{
-            conectar();
-            Statement sent;
-            sent = conexion.createStatement();
-            ResultSet rest = sent.executeQuery(sql);
-            while(rest.next()){
-                anio.addItem(rest.getString("idAnio"));
-                
-            }
-            } catch (SQLException ex) {
-            ex.printStackTrace();
-            conexion.rollback();
-        } finally {
-            desconectar();
-        }  
-        }
-    public String selectToCurso(String curso, String grado, String anio) throws SQLException{
-        String sql = "select idCursos from cursos join grados on cursos.idGrados = grados.idGrados where idAnio = "+anio+" and Curso= '"+curso+"' and Grado = '"+grado+"';";
-        //String sql1 = "select count(idEstudiantes), Curso from estudiantes inner join cursos on estudiantes.idCursos = cursos.idCursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where grados.Grado = "+grado+" and aniolectivos.idAnio = "+anio+" group by Curso;";
-         String[] s = new String[3];
-        try {
-            conectar();
-            Statement sent;
-            sent = conexion.createStatement();
-            ResultSet rest = sent.executeQuery(sql);
-            while(rest.next()){
-                //id =rest.getString("idCursos");
-                s[0] = rest.getString("idCursos");
-               
-               
-            }
-            //System.out.print("el id es:");
-            //System.out.print(s[0]);
-           // System.out.print(s[1]);
-            //s[0].toString();
-            //d=s[0];
-          
-          //  System.out.print("------");
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            conexion.rollback();
-        } finally {
-            desconectar();
-        }
-        return s[0];
-    
-    }
-    
-    //------------------------------
-    
-    public void selectAcudiente(String idEstudiantes, JLabel nombre, JLabel apellido, JLabel telefono, JLabel direccion, JLabel documento) throws SQLException{
-        String [] t = new String [6];
-        String sql = "select * from acudientes where idEstudiantes = "+idEstudiantes+";";
-        try{
-            conectar();
-            Statement sent;
-            sent = conexion.createStatement();
-            ResultSet rest = sent.executeQuery(sql);
-            System.out.print(rest);
-            while(rest.next()){
-                //String[] head = {"IdEst","Nombres","Apellidos","Documento","EPS","RH","Telefono","Dirección"};
-                
-                nombre.setText(rest.getString("Nombres"));
-                apellido.setText(rest.getString("Apellidos"));
-                telefono.setText(rest.getString("Telefono"));
-                direccion.setText(rest.getString("Direccion"));
-                documento.setText(rest.getString("Documento"));
-                
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            conexion.rollback();
-        } finally {
-            desconectar();
-        } 
-    }
-    
-    //---------------------------
-    public void selectEstudiante(JTable tblEst, DefaultTableModel modelo, String anio, String curso, String grado, String nombre, String apellido)throws SQLException{
-        String[] t = new String [8];
-        String sql = "select * from estudiantes where idCursos = ( select idCursos from cursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where aniolectivos.idAnio = "+anio+" and grados.Grado = "+grado+" and cursos.Curso = '"+curso+"') and estudiantes.Nombres like '"+nombre+"' or estudiantes.Apellidos like '"+apellido+"';";
-        try{
-            conectar();
-            Statement sent;
-            sent = conexion.createStatement();
-            ResultSet rest = sent.executeQuery(sql);
-            while(rest.next()){
-                //String[] head = {"IdEst","Nombres","Apellidos","Documento","EPS","RH","Telefono","Dirección"}; 
-                t[0] = rest.getString("IdEstudiantes");
-                t[1] = rest.getString("Nombres");
-                t[2] = rest.getString("Apellidos");
-                t[3] = rest.getString("Documento");
-                t[4] = rest.getString("EPS");
-                t[5] = rest.getString("RH");
-                t[6] = rest.getString("Telefono");
-                t[7] = rest.getString("Direccion");
-                modelo.addRow(t);
-                tblEst.setModel(modelo);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            conexion.rollback();
-        } finally {
-            desconectar();
-        } 
-        
-    }
-    
-    
-    
-    
-    //---------------------------
-    public void selectToCursosbygrad(JComboBox Curso, String grado, String anio)throws SQLException{
-        String sql = "select Curso from cursos inner join grados on cursos.idGrados = grados.idGrados inner join aniolectivos on grados.idAnio = aniolectivos.idAnio where aniolectivos.idAnio = "+anio+" and grados.Grado ="+grado;
-        try{
-            conectar();
-            Statement sent;
-            sent = conexion.createStatement();
-            ResultSet rest = sent.executeQuery(sql);
-            while(rest.next()){
-                Curso.addItem(rest.getString("Curso"));
-                
-            }
-            } catch (SQLException ex) {
-            ex.printStackTrace();
-            conexion.rollback();
-        } finally {
-            desconectar();
-        }  
-    }
-    //---------------------------
     public void selectToGradosAll(JComboBox Grad, String anio) throws SQLException{
-        String sql = "SELECT Grado FROM grados where idAnio = '"+anio+"' ";
-                  // + "ORDER BY Grado ASC;";
-            // int cant=Grad.getItemCount();
-        //System.out.print("--+--+--");
-        // System.out.print(Grad.getItemCount());
-         //   System.out.print("------");
+        String sql = "SELECT Grado FROM grados where idAnio = '"+anio+"' "
+                   + "ORDER BY Grado ASC;";
         try {
             conectar();
             Statement sent;
@@ -335,9 +79,6 @@ public class Consultor extends Conexion {
             while(rest.next()){
                 Grad.addItem(rest.getString("Grado"));
             }
-           
-            //System.out.print(Grad.getItemCount());
-          //  System.out.print("------");
         } catch (SQLException ex) {
             ex.printStackTrace();
             conexion.rollback();
@@ -345,7 +86,7 @@ public class Consultor extends Conexion {
             desconectar();
         }        
     }
-    //--------------
+    
     public void selectToMaterias(JTable tblGrad, DefaultTableModel modelo, String LV_Anio, String LV_Grado) throws SQLException{
         String[] s = new String[1];
         String sql = "SELECT Materia FROM materias "
@@ -393,11 +134,11 @@ public class Consultor extends Conexion {
         }
     }
     
-    public void selectToUsuarios(JLabel txtNombre, JLabel txtApellidos, JLabel txtPerfil) throws SQLException{
-        String[] s = new String[2]; 
+    public boolean selectToUsers(JLabel txtNombre, JLabel txtApellidos, JLabel txtPerfil, String User) throws SQLException{
+        String[] s = new String[3];
         String sql = "SELECT u.Nombres, u.Apellidos, p.Descripcion " +
                      "FROM usuarios u INNER JOIN perfiles p ON u.idPerfiles = p.idPerfiles " +
-                     "WHERE u.idUsuarios = 'Pascuas102'";
+                     "WHERE u.idUsuarios = '"+User+"';";
         try {
             conectar();
             Statement sent;
@@ -408,15 +149,65 @@ public class Consultor extends Conexion {
                 s[1] = rest.getString("u.Apellidos");
                 s[2] = rest.getString("p.Descripcion");
             }
+            if(s[0] != null){
+                txtNombre.setText(s[0]);
+                txtApellidos.setText(s[1]);
+                txtPerfil.setText(s[2]);
+                return true;
+            }else {
+                return false;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             conexion.rollback();
+            return false;
         } finally {
             desconectar();
         }
     }
-
-    private void puts(String[] t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public String selectToUsers(String User) throws SQLException{
+        String ret = "";
+        String sql = "SELECT Estado FROM Usuarios WHERE idUsuarios like '"+User+"';";
+        try {
+            conectar();
+            Statement sent;
+            sent = conexion.createStatement();
+            ResultSet rest = sent.executeQuery(sql);
+            while(rest.next()){
+                ret = rest.getString("Estado");
+            }
+            return ret;
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+            conexion.rollback();
+            return null;
+        } finally {
+            desconectar();
+        }        
+    }
+    
+    public String[] selectToUsersDescription(String User) throws SQLException{
+        String[] ret = new String[3];
+        String sql = "SELECT u.Nombres, u.Apellidos, p.Descripcion FROM usuarios u INNER JOIN perfiles p ON u.idPerfiles = p.idPerfiles WHERE idUsuarios like '"+User+"';";
+        try {
+            
+            conectar();
+            Statement sent;
+            sent = conexion.createStatement();
+            ResultSet rest = sent.executeQuery(sql);
+            while(rest.next()){
+                ret[0] = rest.getString("u.Nombres");
+                ret[1] = rest.getString("u.Apellidos");
+                ret[2] = rest.getString("p.Descripcion");
+            }
+            return ret;
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+            conexion.rollback();
+            return null;
+        } finally {
+            desconectar();
+        }
     }
 }

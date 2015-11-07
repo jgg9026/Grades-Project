@@ -28,6 +28,8 @@ public class Table extends javax.swing.JDialog {
     }
     
     public void generatorTable(String LV_Grado, String LV_Curso, String LV_Anio) throws SQLException{
+        modelo = new DefaultTableModel(null, ini);
+        tblEst.setModel(modelo);
         search.selectToEst(tblEst, modelo, LV_Anio, LV_Grado, LV_Curso);
     }
 

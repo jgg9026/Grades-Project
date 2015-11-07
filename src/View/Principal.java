@@ -6,6 +6,7 @@
 package View;
 
 import DBHandling.Consultor;
+import DBHandling.Updater;
 import Models.Bridge;
 import Models.Encrypt;
 import View.models.Consultar;
@@ -20,11 +21,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import View.models.Registro_alumnos;
-import View.models.Registro_docentes;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 /**
  *
  * @author JuanDavid
@@ -34,6 +31,7 @@ public class Principal extends javax.swing.JFrame {
     boolean state = false;
     String[] GV_data;
     Consultor search = new Consultor();
+    Updater change = new Updater();
     Bridge message = new Bridge();
     Encrypt clue = new Encrypt(); 
     
@@ -64,6 +62,7 @@ public class Principal extends javax.swing.JFrame {
         passUser = new javax.swing.JPasswordField();
         btnConect = new javax.swing.JButton();
         Principal = new javax.swing.JPanel();
+        Prof = new javax.swing.JPanel();
         Secretaria = new javax.swing.JPanel();
         Estudiantes = new javax.swing.JPanel();
         btnMat2 = new javax.swing.JButton();
@@ -86,13 +85,13 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel1.setText("Usuario");
 
-        txtUser.addActionListener(new java.awt.event.ActionListener() {
+        jLabel2.setText("Contraseña");
+
+        passUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUserActionPerformed(evt);
+                passUserActionPerformed(evt);
             }
         });
-
-        jLabel2.setText("Contraseña");
 
         btnConect.setText("Conectar");
         btnConect.addActionListener(new java.awt.event.ActionListener() {
@@ -129,9 +128,22 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(passUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 363, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
                 .addComponent(btnConect)
                 .addContainerGap())
+        );
+
+        Prof.setBorder(javax.swing.BorderFactory.createTitledBorder("Profesores"));
+
+        javax.swing.GroupLayout ProfLayout = new javax.swing.GroupLayout(Prof);
+        Prof.setLayout(ProfLayout);
+        ProfLayout.setHorizontalGroup(
+            ProfLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 511, Short.MAX_VALUE)
+        );
+        ProfLayout.setVerticalGroup(
+            ProfLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 503, Short.MAX_VALUE)
         );
 
         Secretaria.setBorder(javax.swing.BorderFactory.createTitledBorder("Secretaria"));
@@ -146,11 +158,6 @@ public class Principal extends javax.swing.JFrame {
         btnMat2.setPreferredSize(new java.awt.Dimension(81, 85));
         btnMat2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         btnMat2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnMat2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMat2ActionPerformed(evt);
-            }
-        });
 
         btnMateria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/FindUser_2 (64x64).png"))); // NOI18N
         btnMateria.setText("Consultar");
@@ -172,11 +179,6 @@ public class Principal extends javax.swing.JFrame {
         btnMat1.setPreferredSize(new java.awt.Dimension(81, 85));
         btnMat1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         btnMat1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnMat1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMat1ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout EstudiantesLayout = new javax.swing.GroupLayout(Estudiantes);
         Estudiantes.setLayout(EstudiantesLayout);
@@ -218,11 +220,6 @@ public class Principal extends javax.swing.JFrame {
         btnMat3.setPreferredSize(new java.awt.Dimension(81, 85));
         btnMat3.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         btnMat3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnMat3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMat3ActionPerformed(evt);
-            }
-        });
 
         btnMat4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/FindUser_2 (64x64).png"))); // NOI18N
         btnMat4.setText("Consultar");
@@ -317,13 +314,13 @@ public class Principal extends javax.swing.JFrame {
         SecretariaLayout.setVerticalGroup(
             SecretariaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SecretariaLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addComponent(Estudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(Profesores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Admon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
@@ -336,14 +333,14 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(WelcomeLayout.createSequentialGroup()
                 .addGap(127, 127, 127)
                 .addComponent(jLabel3)
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
         WelcomeLayout.setVerticalGroup(
             WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(WelcomeLayout.createSequentialGroup()
                 .addGap(194, 194, 194)
                 .addComponent(jLabel3)
-                .addContainerGap(257, Short.MAX_VALUE))
+                .addContainerGap(285, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout PrincipalLayout = new javax.swing.GroupLayout(Principal);
@@ -357,14 +354,18 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(Secretaria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
             .addGroup(PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PrincipalLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(Welcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(PrincipalLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(Welcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Prof, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         PrincipalLayout.setVerticalGroup(
             PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 531, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
             .addGroup(PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(PrincipalLayout.createSequentialGroup()
                     .addContainerGap()
@@ -373,7 +374,11 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(PrincipalLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(Welcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Welcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PrincipalLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(Prof, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -388,8 +393,10 @@ public class Principal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(Login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -409,45 +416,44 @@ public class Principal extends javax.swing.JFrame {
     }
     
     private void btnConectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectActionPerformed
-        /*Welcome.setVisible(false);
-                Secretaria.setVisible(true);
-                btnConect.setText("Desconectar");
-                txtUser.setEditable(false);
-                passUser.setEditable(false);*/
-        DateFormat dateFormat = new SimpleDateFormat("yyyy");
-        Date date = new Date();
-        System.out.println(dateFormat.format(date)); //2014/08/06 15:59:48
         if(message.setter(GV_data) == true){
-            state = !state;
             try {
                 String[] s = search.selectToUsers(txtUser.getText(), clue.getStringMenssageDigest(clue.getStringMenssageDigest(clue.getStringMenssageDigest(passUser.getText(),"SHA-1"),"MD5"),"MD2"));
-                this.setTitle("Bienvenido: "+s[0]+" "+s[1]+"   Acceso: "+s[2]);
+                if(s[0] != null){
+                    state = !state;                    
+                    this.setTitle("Bienvenido: "+s[0]+" "+s[1]+"   Acceso: "+s[2]);
+                    if(state == true){
+                        change.updateToUsuarios(1, txtUser.getText());
+                        Welcome.setVisible(false);
+                        Secretaria.setVisible(true);
+                        btnConect.setText("Desconectar");
+                        txtUser.setEditable(false);
+                        passUser.setEditable(false);
+                    }else{
+                        change.updateToUsuarios(0, txtUser.getText());
+                        btnConect.setText("Conectar");
+                        txtUser.setEditable(true);
+                        passUser.setEditable(true);
+                        passUser.removeAll();
+                        jLabel3.setText("Hasta Luego");
+                        this.setTitle("Principal");
+                        Welcome.setVisible(true);
+                        Secretaria.setVisible(false);
+                        message.deSetter(GV_data);
+                    }
+                }else {
+                    JOptionPane.showMessageDialog(null, "Los datos ingresados son no son correctos");
+                    passUser.removeAll();
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             } catch (NoSuchAlgorithmException ex) {
                 ex.printStackTrace();
             }
-            if(state == true){
-                Welcome.setVisible(false);
-                Secretaria.setVisible(true);
-                btnConect.setText("Desconectar");
-                txtUser.setEditable(false);
-                passUser.setEditable(false);
-            }else{
-                btnConect.setText("Conectar");
-                txtUser.setEditable(true);
-                passUser.setEditable(true);
-                passUser.removeAll();
-                jLabel3.setText("Hasta Luego");
-                this.setTitle("Principal");
-                Welcome.setVisible(true);
-                Secretaria.setVisible(false);
-                message.deSetter(GV_data);
-            }
         }else{
             JOptionPane.showMessageDialog(null, "Los datos ingresados son no son correctos");
             passUser.removeAll();
-        }  
+        }      
     }//GEN-LAST:event_btnConectActionPerformed
 
     private void btnMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMateriaActionPerformed
@@ -465,24 +471,9 @@ public class Principal extends javax.swing.JFrame {
         abrir.setVisible(true);
     }//GEN-LAST:event_btnMat6ActionPerformed
 
-    private void btnMat1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMat1ActionPerformed
-         Registro_alumnos abrir = new Registro_alumnos();
-         abrir.setVisible(true);
-    }//GEN-LAST:event_btnMat1ActionPerformed
-
-    private void btnMat3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMat3ActionPerformed
-        Registro_docentes abrir = new Registro_docentes();
-         abrir.setVisible(true);
-                                
-    }//GEN-LAST:event_btnMat3ActionPerformed
-
-    private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
+    private void passUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passUserActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtUserActionPerformed
-
-    private void btnMat2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMat2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnMat2ActionPerformed
+    }//GEN-LAST:event_passUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -528,6 +519,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel Estudiantes;
     private javax.swing.JPanel Login;
     private javax.swing.JPanel Principal;
+    private javax.swing.JPanel Prof;
     private javax.swing.JPanel Profesores;
     private javax.swing.JPanel Secretaria;
     private javax.swing.JPanel Welcome;
